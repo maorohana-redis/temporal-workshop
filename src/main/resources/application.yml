@@ -1,0 +1,7 @@
+spring:
+  temporal:
+    namespace: default
+    connection:
+      target: localhost:7233
+    workers-auto-discovery:
+      packages: org.example
