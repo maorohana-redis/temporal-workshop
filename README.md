@@ -43,16 +43,6 @@ temporal server start-dev --db-filename temporal.db
 
 > Worker listens to `order-queue` and exposes APIs on `http://localhost:8080`
 
----
-
-### 📦 REST API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET`  | `/orders/in-process` | List all active workflow IDs |
-| `POST` | `/orders/cancel/{workflowId}` | Send cancel signal to workflow |
-
----
 
 ### 🧪 Run Tests
 
