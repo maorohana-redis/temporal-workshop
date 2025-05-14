@@ -3,6 +3,8 @@ package org.example.order.workflow;
 import java.time.Duration;
 
 import io.temporal.activity.ActivityOptions;
+import io.temporal.failure.ActivityFailure;
+import io.temporal.failure.ApplicationFailure;
 import io.temporal.spring.boot.WorkflowImpl;
 import io.temporal.workflow.Workflow;
 import org.example.order.activity.OrderActivities;
@@ -25,15 +27,15 @@ public class OrderWorkflowImpl implements OrderWorkflow {
         status = "Checking Inventory";
         if (!activities.checkInventory(order)) {
             status = "Failed: Out of Stock";
-            return;
+            throw ApplicationFailure.newNonRetryableFailure("Out of Stock", "out-of-stock-failure");
         }
 
         status = "Processing Payment";
         try {
             activities.chargePayment(order);
-        } catch (Exception e) {
+        } catch (ActivityFailure activityFailure) {
             status = "Failed: Payment Error";
-            return;
+            throw activityFailure;
         }
 
         status = "Awaiting Cancellation";
